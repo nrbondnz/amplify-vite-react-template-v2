@@ -5,36 +5,41 @@ import { generateClient } from "aws-amplify/data";
 const client = generateClient<Schema>();
 
 function App() {
-  const [todos, setTodos] = useState<Array<Schema["Todo"]["type"]>>([]);
+    const [locations, setLocations] = useState<Array<Schema["locations"]["type"]>>([]);
 
-  useEffect(() => {
-    client.models.Todo.observeQuery().subscribe({
-      next: (data) => setTodos([...data.items]),
-    });
-  }, []);
+    useEffect(() => {
+        const subscription = client.models.locations.observeQuery().subscribe({
+            next: (data) => setLocations([...data.items]),
+        });
 
-  function createTodo() {
-    client.models.Todo.create({ content: window.prompt("Todo content") });
-  }
+        return () => subscription.unsubscribe();
+    }, []);
 
-  return (
-    <main>
-      <h1>My todos</h1>
-      <button onClick={createTodo}>+ new</button>
-      <ul>
-        {todos.map((todo) => (
-          <li key={todo.id}>{todo.content}</li>
-        ))}
-      </ul>
-      <div>
-        🥳 App successfully hosted. Try creating a new todo.
-        <br />
-        <a href="https://docs.amplify.aws/react/start/quickstart/#make-frontend-updates">
-          Review next step of this tutorial.
-        </a>
-      </div>
-    </main>
-  );
+    function createLocation() {
+        const locationName = window.prompt("Location name");
+        if (locationName) {
+            client.models.locations.create({ entityName: locationName, id: 74 });
+        }
+    }
+
+    return (
+        <main>
+            <h1>My Locations</h1>
+            <button onClick={createLocation}>+ new</button>
+            <ul>
+                {locations.map((location) => (
+                    <li key={location.id}>{location.entityName}</li>
+                ))}
+            </ul>
+            <div>
+                🥳 App successfully hosted. Try creating a new location.
+                <br />
+                <a href="https://docs.amplify.aws/react/start/quickstart/#make-frontend-updates">
+                    Review the next step of this tutorial.
+                </a>
+            </div>
+        </main>
+    );
 }
 
 export default App;
