@@ -2,13 +2,13 @@ import { type ClientSchema, a, defineData } from '@aws-amplify/backend';
 import { schema as generatedSqlSchema } from './schema.sql';
 
 // Add a global authorization rule
-const sqlSchema = generatedSqlSchema.authorization(allow => allow.guest())
+const sqlSchema = generatedSqlSchema.authorization(allow => allow.authenticated());
 
 // Relational database sources can coexist with DynamoDB tables managed by Amplify.
 const schema = a.schema({
     Todo: a.model({
         content: a.string(),
-    }).authorization(allow => [allow.guest()])
+    }).authorization(allow => [allow.authenticated()])
 });
 
 // Use the a.combine() operator to stitch together the models backed by DynamoDB
@@ -20,7 +20,6 @@ const combinedSchema = a.combine([schema, sqlSchema]);
 export type Schema = ClientSchema<typeof combinedSchema>;
 
 export const data = defineData({
-    // Update the data definition to use the combined schema, instead of just
-    // your DynamoDB-backed schema
+    // Update the data definition to use the combined schema
     schema: combinedSchema
 });
