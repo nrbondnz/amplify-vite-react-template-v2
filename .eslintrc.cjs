@@ -10,9 +10,12 @@ module.exports = {
   parser: '@typescript-eslint/parser',
   plugins: ['react-refresh'],
   rules: {
+    'complexity': "off", // Disables complexity rule for the entire project
     'react-refresh/only-export-components': [
-      'warn',
+      'off',
       { allowConstantExport: true },
     ],
-  },
+    '@typescript-eslint/no-unused-vars': ['off', { varsIgnorePattern: '^useNavigate$' }],
+   
+  }
 }

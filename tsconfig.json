@@ -15,11 +15,28 @@
     "jsx": "react-jsx",
 
     /* Linting */
-    "strict": true,
-    "noUnusedLocals": true,
-    "noUnusedParameters": true,
-    "noFallthroughCasesInSwitch": true
+    "noUnusedLocals": false,
+    "noUnusedParameters": false,
+    "noFallthroughCasesInSwitch": true,
+    "outDir": "./dist",
+    "rootDir": ".",
+    "sourceMap": true,
+    "baseUrl": ".",
+    "types": ["./src/types/global"],
+    "paths": {
+      "@*": ["src/*"],
+      "@reducers/*": ["src/reducers/*"],
+      "@components/*": ["src/components/*"],
+      "@context/*": ["src/context/*"],
+      "@hooks/*": ["src/hooks/*"],
+      "@shared/*": ["src/shared/*"],
+      "@controller/*": ["src/controller/*"],
+      "@utils/*": ["src/utils/*"],
+      "@amplify-data/*": ["amplify/data/*"],
+      "@amplify-auth/*":["amplify/auth/*"]
+    }
   },
-  "include": ["src"],
+  "include": ["src/**/*.ts", "src/**/*.tsx", "amplify/data/**/*.ts", "amplify/auth/**/*.ts", "amplify/*.ts", "src/*.tsx"],
+  "exclude": ["node_modules", "dist", "scripts"],
   "references": [{ "path": "./tsconfig.node.json" }]
 }

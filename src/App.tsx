@@ -1,12 +1,15 @@
+import { useEntityData } from "store-temp-of-files/useEntityData";
+import { EntityTypes, ILocation } from "@shared/types/types";
+import { generateClient } from "aws-amplify/data";
 import { useEffect, useState } from "react";
 import type { Schema } from "../amplify/data/resource";
-import { generateClient } from "aws-amplify/data";
 
 const client = generateClient<Schema>();
 
 function App() {
     const [locations, setLocations] = useState<Array<Schema["locations"]["type"]>>([]);
-
+    /*const {entities} = useEntityData<ILocation>(EntityTypes.Location);
+    console.log("Entities: ", entities)*/
     // Fetch locations on component mount
     useEffect(() => {
         async function fetchLocations() {
@@ -19,22 +22,26 @@ function App() {
         }
 
         fetchLocations();
-    }, []);
+    }, [locations]);
 
-    // Setup subscription
+/*    // Setup subscription
     useEffect(() => {
         const subscription = client.models.locations.observeQuery().subscribe({
-            next: (data) => setLocations([...data.items]),
+            next: ({ items }) => setLocations(items),
+            error: (error) => console.error("Subscription error: ", error),
         });
 
         return () => subscription.unsubscribe();
-    }, []);
+    }, []);*/
 
     function createLocation() {
         const locationName = window.prompt("Location name");
-        if (locationName) {
-            client.models.locations.create({ entityName: locationName, id: Math.random() * 45 * Math.random() });
-        }
+        console.log("App location entered - not working yet", locationName);
+       /* if (locationName) {
+            client.models.locations.create({ id: 456 })
+                .then(() => console.log("Location created"))
+                .catch((error) => console.error("Error creating location: ", error));
+        }*/
     }
 
     return (
